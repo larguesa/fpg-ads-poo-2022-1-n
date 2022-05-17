@@ -32,6 +32,8 @@ public class CreationListener implements ServletContextListener {
                     + ")");
             stmt.execute("insert or ignore into users values("
                     + "'admin', 20761617, 'Administrador')");
+            stmt.execute("insert or ignore into users values("
+                    + "'fulano', -1196589817, 'Fulano da Silva')");
             stmt.close();
             con.close();
         }catch(Exception ex){
