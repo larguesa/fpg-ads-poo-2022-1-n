@@ -6,6 +6,15 @@
 
 <%@page import="model.User"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    Exception indexException = null;
+    int userListCount = -1;
+    try{
+        userListCount = User.getAllUsers().size();
+    }catch(Exception ex){
+        indexException = ex;
+    }
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,15 +24,14 @@
     <body>
         <%@include file="WEB-INF/jspf/header.jspf"%>
         <h2>Início</h2>
-        <h3>Usuários</h3>
-        <table>
-            <tr><th>Username</th><th>Name</th></tr>
-            <%for(User user: User.getAllUsers()){%>
-            <tr>
-                <td><%= user.getUsername() %></td>
-                <td><%= user.getName() %></td>
-            </tr>
-            <%}%>
-        </table>
+        <%if(indexException != null){%>
+        <div style="color: red"><%= indexException.getMessage() %></div>
+        <%}%>
+        <h3>
+            Usuários
+            <a href="users.jsp">
+                <%= (userListCount==-1) ? '-': userListCount %>
+            </a>
+        </h3>
     </body>
 </html>

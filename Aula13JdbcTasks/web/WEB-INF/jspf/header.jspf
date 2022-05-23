@@ -48,6 +48,8 @@
 </form>
 <%}else{%>
 <form method="post">
+    <a href="index.jsp">INÍCIO</a> |
+    <a href="users.jsp">USUÁRIOS</a> |
     Bem vindo, <%= sessionUser.getName() %>
     <input type="submit" name="logout" value="Sair"/>
 </form>

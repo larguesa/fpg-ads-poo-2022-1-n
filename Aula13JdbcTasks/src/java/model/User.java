@@ -16,6 +16,22 @@ public class User {
     private String name;
     private long passwordHash;
     
+    public static void insert(User user) throws Exception{
+        Class.forName("org.sqlite.JDBC");
+        String url = "jdbc:sqlite:tasks.db";
+        Connection con = DriverManager.getConnection(url);
+        PreparedStatement stmt = con.prepareStatement(
+                "INSERT INTO users(username, name, password_hash)"
+                        + "VALUES(?,?,?)"
+        );
+        stmt.setString(1, user.getUsername());
+        stmt.setString(2, user.getName());
+        stmt.setLong(3, user.getPasswordHash());
+        stmt.execute();
+        stmt.close();
+        con.close();
+    }
+
     public static User getUser(String username, String password) throws Exception{
         User user = null;
         Class.forName("org.sqlite.JDBC");
