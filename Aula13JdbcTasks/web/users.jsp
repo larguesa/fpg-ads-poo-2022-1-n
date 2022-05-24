@@ -20,6 +20,15 @@
                 new User( username,name,(username+password).hashCode())
             );
             response.sendRedirect(request.getRequestURI());
+        }else if(request.getParameter("user-delete")!=null){
+            String username = request.getParameter("username");
+            User.delete(username);
+            response.sendRedirect(request.getRequestURI());
+        }else if(request.getParameter("user-change-password")!=null){
+            String username = request.getParameter("username");
+            String password = request.getParameter("password");
+            User.changePassword(username, password);
+            response.sendRedirect(request.getRequestURI());
         }
     }catch(Exception ex){
         usersException = ex;
@@ -52,11 +61,28 @@
             </fieldset>
             <hr/>
             <table border='1'>
-                <tr><th>Username</th><th>Name</th></tr>
+                <tr><th>Username</th><th>Name</th><th>Exclusão</th><th>Senha</th></tr>
                 <%for(User user: userList){%>
                 <tr>
                     <td><%= user.getUsername() %></td>
                     <td><%= user.getName() %></td>
+                    <td>
+                        <form>
+                            <input type='hidden' name='username' 
+                                   value='<%= user.getUsername() %>'/>
+                            <input type='submit' name='user-delete'
+                                   value='Remover'/>
+                        </form>
+                    </td>
+                    <td>
+                        <form>
+                            <input type='hidden' name='username' 
+                                   value='<%= user.getUsername() %>'/>
+                            <input type='password' name='password'/>
+                            <input type='submit' name='user-change-password'
+                                   value='Alterar'/>
+                        </form>
+                    </td>
                 </tr>
                 <%}%>
             </table>

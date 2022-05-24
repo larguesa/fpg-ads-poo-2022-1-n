@@ -31,7 +31,33 @@ public class User {
         stmt.close();
         con.close();
     }
-
+    
+    public static void delete(String username) throws Exception{
+        Class.forName("org.sqlite.JDBC");
+        String url = "jdbc:sqlite:tasks.db";
+        Connection con = DriverManager.getConnection(url);
+        PreparedStatement stmt = con.prepareStatement(
+                "DELETE FROM users WHERE username=?"
+        );
+        stmt.setString(1, username);
+        stmt.execute();
+        stmt.close();
+        con.close();
+    }
+    
+    public static void changePassword(String username, String newPassword) throws Exception{
+        Class.forName("org.sqlite.JDBC");
+        String url = "jdbc:sqlite:tasks.db";
+        Connection con = DriverManager.getConnection(url);
+        PreparedStatement stmt = con.prepareStatement(
+            "UPDATE users set password_hash=? WHERE username=?"
+        );
+        stmt.setLong(1, (username+newPassword).hashCode());
+        stmt.setString(2, username);
+        stmt.execute();
+        stmt.close();con.close();
+    }
+    
     public static User getUser(String username, String password) throws Exception{
         User user = null;
         Class.forName("org.sqlite.JDBC");
