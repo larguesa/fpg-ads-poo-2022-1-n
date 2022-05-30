@@ -50,6 +50,8 @@
 <form method="post">
     <a href="index.jsp">INÍCIO</a> |
     <a href="users.jsp">USUÁRIOS</a> |
+    <a href="tasks.jsp">TAREFAS</a> |
+    <a href="my-tasks.jsp">MINHAS TAREFAS</a> |
     Bem vindo, <%= sessionUser.getName() %>
     <input type="submit" name="logout" value="Sair"/>
 </form>

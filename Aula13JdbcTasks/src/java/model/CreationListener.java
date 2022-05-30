@@ -25,6 +25,7 @@ public class CreationListener implements ServletContextListener {
             Connection con = DriverManager.getConnection(url);
             Statement stmt = con.createStatement();
             //stmt.execute("drop table users");
+            //stmt.execute("drop table tasks");
             stmt.execute("create table if not exists users("
                     + "username varchar primary key,"
                     + "password_hash integer not null,"
@@ -34,6 +35,12 @@ public class CreationListener implements ServletContextListener {
                     + "'admin', 20761617, 'Administrador')");
             stmt.execute("insert or ignore into users values("
                     + "'fulano', -1196589817, 'Fulano da Silva')");
+            
+            stmt.execute("create table if not exists tasks("
+                    + "id integer primary key AUTOINCREMENT,"
+                    + "username varchar not null,"
+                    + "title varchar not null"
+                    + ")");
             stmt.close();
             con.close();
         }catch(Exception ex){
