@@ -5,12 +5,20 @@
 --%>
 
 <%@page import="model.User"%>
+<%@page import="model.Task"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
+    User user = (User)session.getAttribute("user");
     Exception indexException = null;
     int userListCount = -1;
+    int taskListCount = -1;
+    int myTaskListCount = -1;
     try{
         userListCount = User.getAllUsers().size();
+        taskListCount = Task.getAllTasks().size();
+        if(user!=null){
+            myTaskListCount = Task.getUserTasks(user.getUsername()).size();
+        }
     }catch(Exception ex){
         indexException = ex;
     }
@@ -33,5 +41,17 @@
                 <%= (userListCount==-1) ? '-': userListCount %>
             </a>
         </h3>
+        <h3>
+            Tarefas
+            <a href="tasks.jsp">
+                <%= (taskListCount==-1) ? '-': taskListCount %>
+            </a>
+        </h3>
+        <%if(myTaskListCount!=-1){%>
+        <h4>
+            Minhas tarefas:
+            <a href="my-tasks.jsp"><%= myTaskListCount %></a>
+        </h4>
+        <%}%>
     </body>
 </html>
