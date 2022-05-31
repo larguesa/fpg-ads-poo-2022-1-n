@@ -15,6 +15,7 @@ public class Task {
     private int id;
     private String username;
     private String title;
+    private String dueDate;
     
     public static ArrayList<Task> getAllTasks() throws Exception{
         ArrayList<Task> list = new ArrayList<>();
@@ -22,13 +23,14 @@ public class Task {
         String url = "jdbc:sqlite:tasks.db";
         Connection con = DriverManager.getConnection(url);
         Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("select * from tasks");
+        ResultSet rs = stmt.executeQuery("select * from tasks order by due_date");
         while(rs.next()){
             list.add(
                 new Task(
                     rs.getInt("id"),
                     rs.getString("username"),
-                    rs.getString("title"))
+                    rs.getString("title"),
+                    rs.getString("due_date"))
             );
         }
         rs.close(); stmt.close(); con.close();
@@ -40,29 +42,31 @@ public class Task {
         Class.forName("org.sqlite.JDBC");
         String url = "jdbc:sqlite:tasks.db";
         Connection con = DriverManager.getConnection(url);
-        String sql = "select * from tasks where username=?";
+        String sql = "select * from tasks where username=? order by due_date";
         PreparedStatement stmt = con.prepareStatement(sql);
         stmt.setString(1, username);
         ResultSet rs = stmt.executeQuery();
         while(rs.next()){
             list.add( new Task(
-                            rs.getInt("id"),
-                            rs.getString("username"),
-                            rs.getString("title"))
+                    rs.getInt("id"),
+                    rs.getString("username"),
+                    rs.getString("title"),
+                    rs.getString("due_date"))
             );
         }
         rs.close(); stmt.close(); con.close();
         return list;
     }
     
-    public static void insert(String username, String title) throws Exception{
+    public static void insert(String username, String title, String dueDate) throws Exception{
         Class.forName("org.sqlite.JDBC");
         String url = "jdbc:sqlite:tasks.db";
         Connection con = DriverManager.getConnection(url);
         PreparedStatement stmt = con.prepareStatement
-        ("INSERT INTO tasks(username, title) VALUES(?,?)");
+        ("INSERT INTO tasks(username, title, due_date) VALUES(?,?,?)");
         stmt.setString(1, username);
         stmt.setString(2, title);
+        stmt.setString(3, dueDate);
         stmt.execute(); stmt.close(); con.close();
     }
     
@@ -76,10 +80,11 @@ public class Task {
         stmt.execute(); stmt.close(); con.close();
     }
     
-    public Task(int id, String username, String title) {
+    public Task(int id, String username, String title, String dueDate) {
         this.id = id;
         this.username = username;
         this.title = title;
+        this.dueDate = dueDate;
     }
 
     public String getTitle() {
@@ -104,6 +109,14 @@ public class Task {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(String dueDate) {
+        this.dueDate = dueDate;
     }
     
 }

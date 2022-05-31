@@ -18,7 +18,8 @@
         if(request.getParameter("task-insert")!=null){
             String username = user.getUsername();
             String title = request.getParameter("title");
-            Task.insert(username, title);
+            String dueDate = request.getParameter("due_date");
+            Task.insert(username, title, dueDate);
             response.sendRedirect(request.getRequestURI());
         }else if(request.getParameter("task-delete")!=null){
             int id = Integer.parseInt(request.getParameter("id"));
@@ -46,15 +47,16 @@
         <%}else{%>
             <form>
                 <input type='text' name='title'/>
+                <input type='date' name='due_date'/>
                 <input type='submit' name='task-insert' value='+'/>
             </form>
             <hr/>
             <table border='1'>
-                <tr><th>Username</th><th>Tarefa</th><th>Exclusão</th></tr>
+                <tr><th>Tarefa</th><th>Prazo</th><th>Exclusão</th></tr>
                 <%for(Task task: taskList){%>
                 <tr>
-                    <td><%= task.getUsername() %></td>
                     <td><%= task.getTitle() %></td>
+                    <td><%= task.getDueDate() %></td>
                     <td>
                         <form>
                             <input type='hidden' name='id' 
